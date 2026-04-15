@@ -1,391 +1,544 @@
-# EDA EXP 1 - Combined Code
-import numpy as np
-import pandas as pd
+STATISTICAL INFERENCE LAB
+EXPERIMENT-1
+#-------------------- QUESTION 1 --------------------
+# 95% Confidence Interval
+x <- c(13.0,20.8,25.1,16.0,18.5,19.3,16.8,21.7,16.4,18.8,
+       20.4,15.2,14.8,23.1,17.4,21.3,19.4,15.2,25.2,21.5,
+       17.3,19.9,23.1,16.8,23.2,19.1,15.3,15.6,24.9,18.1,
+       19.4,17.6)
+t.test(x, conf.level = 0.95)
 
-# -------- NUMPY OPERATIONS --------
+#-------------------- QUESTION 2 --------------------
+# 90% Confidence Interval
+x <- c(481,537,513,583,453,510,570,500,457,555,
+       618,327,350,643,499,421,505,637,599,392)
+t.test(x, conf.level = 0.90)
 
-# Array creation
-list1 = [0,1,2,3,4]
-arr = np.array(list1)
-print(type(arr))
-print("arr1:", arr)
+#-------------------- QUESTION 3 --------------------
+# Two Sample Z-Test
+install.packages("BSDA")   # run once
+library(BSDA)
 
-# Array addition
-arr1 = arr + 2
-print("arr1 after adding 2:", arr1)
+zsum.test(mean.x = 937.4, sigma.x = 28, n.x = 56,
+          mean.y = 988.9, sigma.y = sqrt(627), n.y = 57,
+          mu = 0, conf.level = 0.90)
 
-# 2D Array
-list2 = [[0,1,2],[3,4,5],[6,7,8]]
-arr3 = np.array(list2)
-print("arr3:\n", arr3)
-
-arr4 = np.array(list2, dtype='float')
-print("float array:\n", arr4)
-
-# Shape, datatype, size, dimensions
-print("shape:", arr3.shape)
-print("datatype:", arr3.dtype)
-print("size:", arr3.size)
-print("dimensions:", arr3.ndim)
-
-# Slicing
-print("whole array:\n", arr4)
-print("partial array:\n", arr4[:2, :2])
-# Boolean condition
-boo = arr4 > 2
-print("greater than 2:\n", boo)
-# 1D slicing
-arr = np.array([1,2,3,4,5,6,7])
-print("slice from index 4:", arr[4:])
-# Concatenation (1D)
-a1 = np.array([1,2,3])
-a2 = np.array([4,5,6])
-arr = np.concatenate((a1, a2))
-print("concatenated 1D:", arr)
-# Concatenation (2D axis=1)
-a1 = np.array([[1,2,3],[3,4,5]])
-a2 = np.array([[4,5,6],[7,8,9]])
-arr = np.concatenate((a1, a2), axis=1)
-print("concat axis=1:\n", arr)
-# Concatenation (2D axis=0)
-arr = np.concatenate((a1, a2), axis=0)
-print("concat axis=0:\n", arr)
-# -------- PANDAS SERIES --------
-# Series creation
-new_series = pd.Series([5,6,7,8,9,10])
-print(new_series)
-# Access element
-print("element at index 4:", new_series[4])
-# Series with custom index
-new_series = pd.Series([5,6,7,8,9,10], index=['a','b','c','d','e','f'])
-print(new_series)
-print("value at 'f':", new_series['f'])
-# Modify values
-new_series[['a','b','f']] = 0
-print("after modification:\n", new_series)
-
-# Filtering
-new_series = new_series[new_series > 0]
-print("filtered series:\n", new_series)
-
-print("values > 7 multiplied by 2:\n", new_series[new_series > 7] * 2)
+#-------------------- QUESTION 4 (a) --------------------
+# Two sample t-test (equal variance)
+x <- c(3.26,2.26,2.62,2.62,2.36,3.00,2.62,2.40,2.30,2.40)
+y <- c(1.80,1.46,1.54,1.42,1.32,1.56,1.36,1.64,2.00,1.54)
+t.test(x, y, var.equal = TRUE, conf.level = 0.95)
 
 
-# -------- DATAFRAME OPERATIONS --------
+#-------------------- QUESTION 4 (b) --------------------
+# Boxplot
+boxplot(x, y,
+        names = c("With Wedge", "Without Wedge"),
+        main = "Boxplot of Seal Removal Force",
+        ylab = "Force",
+        col = c("lightblue", "lightgreen"))
 
-# Creating DataFrame with NaN
-data = {
-    'First Score': [100,90,np.nan,95],
-    'Second Score': [30,45,56,np.nan],
-    'Third': [np.nan,40,80,98]
+EXPERIMENT-2
+
+#-------------------- BASIC DATA --------------------
+data(cars)
+summary(cars)
+head(cars)
+
+#-------------------- BARPLOT --------------------
+x <- c("A","B","C","D","E","F")
+y <- c(2,4,6,8,10,3)
+
+barplot(y, names.arg = x, col = "blue")
+
+#-------------------- BARPLOT (mtcars) --------------------
+barplot(table(mtcars$cyl),
+        main = "No. of Cylinders",
+        col = "green")
+
+#-------------------- BOXPLOT --------------------
+boxplot(mtcars$mpg, col = "yellow")
+
+
+#-------------------- GROUPED BOXPLOT --------------------
+data(mtcars)
+boxplot(mpg ~ gear, data = mtcars,
+        col = c("lightgreen","green","darkgreen"),
+        xlab = "Number of Gears",
+        ylab = "Miles per Gallon")
+
+#-------------------- HISTOGRAM --------------------
+hist(mtcars$mpg, col = "yellow")
+
+hist(mtcars$mpg,
+     col = "green",
+     breaks = 15,
+     border = "blue")
+
+#-------------------- DENSITY PLOT --------------------
+den <- density(mtcars$mpg)
+plot(den, type = "p", col = "red")
+
+#-------------------- PIE CHART --------------------
+pie(table(mtcars$gear),
+    main = "Gears",
+    radius = 1,
+    col.main = "darkgreen")
+
+#-------------------- SCATTER PLOT --------------------
+plot(x = cars$speed,
+     y = cars$dist,
+     main = "Speed vs Stopping Distance",
+     xlab = "Speed (mph)",
+     ylab = "Stopping Distance (ft)",
+     pch = 23,
+     col = "blue")
+#-------------------- IRIS DATA --------------------
+summary(iris)
+head(iris)
+
+#-------------------- HISTOGRAM (IRIS) --------------------
+hist(iris$Sepal.Length, col = "yellow")
+hist(iris$Sepal.Width, col = "pink")
+hist(iris$Petal.Length, col = "red")
+hist(iris$Petal.Width, col = "blue")
+
+#-------------------- BARPLOT (IRIS) --------------------
+barplot(table(iris$Sepal.Length),
+        main = "No of Sepal Length",
+        col = "pink")
+
+#-------------------- DENSITY (IRIS) --------------------
+den <- density(iris$Sepal.Length)
+plot(den, type = "s", col = "red")
+
+#-------------------- BOXPLOTS (IRIS) --------------------
+boxplot(iris$Sepal.Length, col = "yellow")
+boxplot(iris$Sepal.Width, col = "pink")
+boxplot(iris$Petal.Length, col = "red")
+boxplot(iris$Petal.Width, col = "green")
+
+boxplot(Sepal.Length ~ Petal.Length, data = iris,
+        col = c("blue","green","red"),
+        xlab = "Sepal Length",
+        ylab = "Petal Length")
+
+
+#-------------------- PIE (IRIS) --------------------
+pie(table(iris$Species),
+    main = "Iris Species",
+    radius = 1,
+    col.main = "pink")
+
+#-------------------- SCATTER (IRIS) --------------------
+plot(iris$Sepal.Length, iris$Sepal.Width,
+     col = iris$Species,
+     pch = 21,
+     xlab = "Sepal Length",
+     ylab = "Sepal Width",
+     main = "Scatterplot of Sepal Dimensions")
+
+plot(iris$Sepal.Length, iris$Petal.Length,
+     main = "Petal Length vs Sepal Length",
+     xlab = "Sepal Length",
+     ylab = "Petal Length",
+     pch = 15,
+     col = "red")
+
+EXPERIMENT-3
+#-------------------- 1. SINGLE MEAN Z TEST --------------------
+xbar <- 85
+sigma <- 140
+n <- 18
+mu0 <- 20
+alpha <- 0.05
+
+z <- (xbar - mu0) / (sigma / sqrt(n))
+z
+
+z_crit <- qnorm(1 - alpha)
+
+if (z > z_crit) {
+  cat("Reject Null Hypothesis H0\n")
+} else {
+  cat("Accept Null Hypothesis H0\n")
 }
 
-df = pd.DataFrame(data)
-print("original dataframe:\n", df)
+# Plot
+zvals <- seq(-4, 4, 0.01)
+dens <- dnorm(zvals)
 
-# Fill NaN with 0
-print("fill NaN with 0:\n", df.fillna(0))
+plot(zvals, dens, type = "l",
+     main = "Single Mean Z Test",
+     xlab = "Z value", ylab = "Density")
 
-# Mean
-print("mean values:\n", df.mean())
+z_region <- seq(z_crit, 4, 0.01)
+polygon(c(z_region, rev(z_region)),
+        c(dnorm(z_region), rep(0, length(z_region))),
+        col = "lightcoral", border = NA)
+
+abline(v = z_crit, col = "red", lwd = 2)
+abline(v = z, col = "blue", lwd = 2, lty = 2)
 
 
-# -------- ADVANCED DATAFRAME --------
+#-------------------- 2. TWO MEANS Z TEST --------------------
+xbar1 <- 86; xbar2 <- 58
+s1 <- 10; s2 <- 15
+n1 <- 75; n2 <- 80
+alpha <- 0.05
 
-df = pd.DataFrame(
-{
-    "mark1": [78, np.nan, 80, 88, 89, np.nan, 98, 76, 78, np.nan],
-    "mark2": [78, 88, np.nan, np.nan, 87, 87, 85, np.nan, 76, 84]
-},
-index=['keerthana K', 'Anu', 'Keerthana M R', 'vaish', 'Divya',
-       'Sowj', 'chand', 'sush', 'sree', 'zuvi']
-)
-print("original:\n", df)
-# Fill NaN with 0
-print("fill NaN with 0:\n", df.fillna(0))
-# Fill NaN with mean
-print("fill NaN with mean:\n", df.fillna(df.mean()))
-# =========================
-# EXP 2 - NUMPY + PANDAS BASICS
-# =========================
-import numpy as np
-# Create 2D array
-list2 = [[0,1,2], [3,4,5], [6,7,8]]
-arr2 = np.array(list2)
-print(list2)
-print("Shape:", arr2.shape) # rows x columns
-print("Data Type:", arr2.dtype) # datatype of elements
-print("Size:", arr2.size) # total elements
-print("Num Dimensions:", arr2.ndim) # dimensions
+z <- (xbar1 - xbar2) / sqrt((s1^2/n1) + (s2^2/n2))
+z
 
-# Convert to float type
-arr3 = np.array(list2, dtype="float")
-print("Whole:", arr3)
+z_crit <- qnorm(1 - alpha/2)
 
-# Slicing (first 2 rows & cols)
-print("Part:", arr3[0:2, 0:2])
-
-# Boolean condition
-boo = arr3 > 2
-print(boo)
-
-# 1D array slicing
-arr = np.array([1,2,3,4,5,6,7])
-print(arr[4:7]) # elements from index 4
-print(arr[3:5]) # subset
-
-# Concatenation (1D)
-arr1 = np.array([1,2,3])
-arr2 = np.array([4,5,6])
-arr = np.concatenate((arr1, arr2))
-print(arr)
-
-# Concatenation (2D)
-arr1 = np.array([[1,2],[3,4]])
-arr2 = np.array([[5,6],[7,8]])
-
-arr = np.concatenate((arr1, arr2), axis=1) # column-wise
-print(arr)
-
-arr = np.concatenate((arr1, arr2), axis=0) # row-wise
-print(arr)
-
-# Stack arrays
-arr1 = np.array([1,2,3])
-arr2 = np.array([4,5,6])
-arr = np.stack((arr1, arr2), axis=1)
-print(arr)
-
-# -------- PANDAS --------
-
-import pandas as pd
-
-# Create series
-new_series = pd.Series([5,6,7,8,9,10])
-print(new_series)
-
-print(new_series[4]) # access element
-
-# Custom index
-new_series = pd.Series([5,6,7,8,9,10],
-index=['a','b','c','d','e','f'])
-
-print(new_series['f']) # access by label
-
-# Modify values
-new_series[['a','b','f']] = 0
-print(new_series)
-
-# Filter values > 0
-new_series2 = new_series[new_series > 0]
-print(new_series2)
-
-# -------- DATAFRAME --------
-
-dict = {
-'First Score': [100, 90, np.nan, 95],
-'Second Score': [30, 45, 56, np.nan],
-'Third Score': [np.nan, 40, 80, 98]
+if (abs(z) > z_crit) {
+  cat("Reject Null Hypothesis H0\n")
+} else {
+  cat("Accept Null Hypothesis H0\n")
 }
 
-df = pd.DataFrame(dict)
-print(df)
+# Plot
+zvals <- seq(-5, 5, 0.01)
+plot(zvals, dnorm(zvals), type = "l",
+     main = "Two Means Z Test",
+     xlab = "Z value", ylab = "Density")
 
-# Fill missing values with 0
-df = df.fillna(0)
-print(df)
-
-
-# =========================
-# EXP 3 - DATA VISUALIZATION
-# =========================
-
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-df = pd.read_csv("ds-1.csv", index_col=0, encoding="ISO-8859-1")
-
-print(df.describe()) # summary stats
-print(df.describe().T) # transpose
-
-# Histogram
-plt.hist(df['Speed'], bins=10, edgecolor='black')
-plt.xlabel('Pokemon Speed')
-plt.ylabel('Frequency')
-plt.title("Speed Distribution")
-plt.show()
-
-# Custom bins
-bin_edges = [0,10,20,30,40,50,60,70,80,90,100,110,120,130,140,150]
-plt.hist(df['Speed'], bins=bin_edges, edgecolor='red')
-plt.show()
-
-# Seaborn plots
-sns.displot(df['Speed']) # distribution plot
-sns.scatterplot(x='Attack', y='Defense', data=df) # scatter plot
-sns.lmplot(x='Attack', y='Defense', data=df) # regression
-
-# Boxplot
-sns.boxplot(data=df.drop(['Total','Stage','Legendary'], axis=1))
-
-# Violin + swarm
-sns.violinplot(x="Type 1", y="Attack", data=df)
-sns.swarmplot(x="Type 1", y="Attack", data=df)
-
-plt.show()
+abline(v = c(-z_crit, z_crit), col = "red", lwd = 2)
+abline(v = z, col = "blue", lwd = 2, lty = 2)
 
 
-# =========================
-# EXP 4 - FILE HANDLING
-# =========================
+#-------------------- 3. SINGLE PROPORTION Z TEST --------------------
+x <- 150
+n <- 300
+p0 <- 0.25
+alpha <- 0.05
 
-# Write file
-file = open('keer.txt','w')
-file.write('sample text')
-file.close()
+phat <- x / n
+z <- (phat - p0) / sqrt((p0*(1-p0))/n)
 
-# Read file
-file = open('keer.txt','r')
-print(file.read())
-file.close()
+z_crit <- qnorm(1 - alpha/2)
 
-# Append file
-file = open('keer.txt','a')
-file.write("\nnew line added")
-file.close()
+if (abs(z) > z_crit) {
+  cat("Reject Null Hypothesis H0\n")
+} else {
+  cat("Accept Null Hypothesis H0\n")
+}
 
-# CSV operations
-df = pd.read_csv('store_data.csv')
-df.to_csv('output.csv', index=False)
+# Plot
+zvals <- seq(-4, 4, 0.01)
+plot(zvals, dnorm(zvals), type = "l",
+     main = "Single Proportion Z Test",
+     xlab = "Z value", ylab = "Density")
 
-# Excel operations
-df = pd.read_excel('store_data.csv')
-df.to_excel('output.xlsx', index=False)
-
-
-# =========================
-# EXP 5 - EDA ANALYSIS
-# =========================
-
-df = pd.read_csv("EDA activiy 1 (1).csv")
-
-print("rows:", df.shape[0])
-print("columns:", df.shape[1])
-
-# Check duplicates
-print(df.duplicated(subset=['customerID']).sum())
-
-# Missing values
-print(df.isnull().sum())
-
-# Fix TotalCharges
-df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
-df['TotalCharges'].fillna(df['TotalCharges'].median(), inplace=True)
-
-# Clean categorical columns
-for col in df.select_dtypes(include='object').columns:
-df[col] = df[col].str.strip().str.lower()
-
-# Mean values
-print(df[['tenure','MonthlyCharges','TotalCharges']].mean())
-
-# Histogram
-sns.histplot(df['tenure'])
-sns.histplot(df['MonthlyCharges'])
-sns.histplot(df['TotalCharges'])
-
-plt.show()
-
-# Churn plot
-sns.countplot(x='Churn', data=df)
-plt.show()
+abline(v = c(-z_crit, z_crit), col = "red", lwd = 2)
+abline(v = z, col = "blue", lwd = 2, lty = 2)
 
 
-# =========================
-# EXP 6 - OUTLIER DETECTION
-# =========================
+#-------------------- 4. TWO PROPORTION Z TEST --------------------
+x1 <- 75; n1 <- 400
+x2 <- 60; n2 <- 280
+alpha <- 0.05
 
-from sklearn.datasets import load_diabetes
-from scipy import stats
+p1 <- x1/n1
+p2 <- x2/n2
 
-diabetes = load_diabetes()
-df = pd.DataFrame(diabetes.data, columns=diabetes.feature_names)
+p_pool <- (x1 + x2) / (n1 + n2)
 
-# Boxplot
-sns.boxplot(df['bmi'])
-plt.show()
+z <- (p1 - p2) / sqrt(p_pool*(1-p_pool)*(1/n1 + 1/n2))
 
-# Z-score method
-z = np.abs(stats.zscore(df['age']))
-df_no_outliers = df[z < 2]
+z_crit <- qnorm(1 - alpha/2)
 
-print(df.shape, df_no_outliers.shape)
+if (abs(z) > z_crit) {
+  cat("Reject Null Hypothesis H0\n")
+} else {
+  cat("Accept Null Hypothesis H0\n")
+}
 
-# IQR method
-Q1 = df['bmi'].quantile(0.25)
-Q3 = df['bmi'].quantile(0.75)
-IQR = Q3 - Q1
+# Plot
+zvals <- seq(-4, 4, 0.01)
+plot(zvals, dnorm(zvals), type = "l",
+     main = "Two Proportion Z Test",
+     xlab = "Z value", ylab = "Density")
 
-upper = Q3 + 1.5 * IQR
-lower = Q1 - 1.5 * IQR
+abline(v = c(-z_crit, z_crit), col = "red", lwd = 2)
+abline(v = z, col = "blue", lwd = 2, lty = 2)
+#############################################
+# 🔹 LAB 4: F-TEST (ONE-TAILED & TWO-TAILED)
+#############################################
 
-print("Outliers:", ((df['bmi'] > upper) | (df['bmi'] < lower)).sum())
+# -------- ONE-TAILED F TEST --------
+s1_sq <- 40; s2_sq <- 10     # sample variances
+n1 <- 14; n2 <- 12           # sample sizes
+alpha <- 0.05
+
+F_cal <- s1_sq / s2_sq       # F statistic
+df1 <- n1 - 1; df2 <- n2 - 1
+
+F_critical <- qf(1 - alpha, df1, df2)  # critical value
+
+# decision
+if(F_cal > F_critical){
+  print("Reject H0")
+} else {
+  print("Accept H0")
+}
+
+# -------- TWO-TAILED F TEST --------
+s1_sq <- 30; s2_sq <- 27
+n1 <- 10; n2 <- 12
+alpha <- 0.05
+
+F_cal <- s1_sq / s2_sq
+df1 <- n1 - 1; df2 <- n2 - 1
+
+F_upper <- qf(1 - alpha/2, df1, df2)
+F_lower <- 1 / qf(1 - alpha/2, df2, df1)
+
+# decision
+if(F_cal < F_lower || F_cal > F_upper){
+  print("Reject H0")
+} else {
+  print("Accept H0")
+}
+ 
+
+# 🔹 LAB 5: CHI-SQUARE (GOODNESS OF FIT)
+
+# -------- ONE-TAILED --------
+obs <- c(18,24,20,25,15)     # observed
+exp <- c(20,20,20,20,20)     # expected
+n <- length(obs)
+alpha <- 0.05
+
+chi_cal <- sum((obs - exp)^2 / exp)   # chi-square statistic
+chi_critical <- qchisq(1 - alpha, n - 1)
+
+# decision
+if(chi_cal > chi_critical){
+  print("Reject H0")
+} else {
+  print("Accept H0")
+}
+
+# -------- TWO-TAILED --------
+obs <- c(20,30,25,25)
+exp <- c(25,25,25,25)
+n <- length(obs)
+
+chi_cal <- sum((obs - exp)^2 / exp)
+
+chi_upper <- qchisq(1 - alpha/2, n - 1)
+chi_lower <- qchisq(alpha/2, n - 1)
+
+# decision
+if(chi_cal < chi_lower || chi_cal > chi_upper){
+  print("Reject H0")
+} else {
+  print("Accept H0")
+}
 
 
-# =========================
-# EXP 7 - MISSING VALUES + BAR PLOT
-# =========================
+#############################################
+# 🔹 LAB 6: CHI-SQUARE (INDEPENDENCE TEST)
+#############################################
 
-# Series with NaN
-data = pd.Series([1,2,np.nan,4])
-print(data.dropna()) # remove missing
+# -------- DATASET 1 --------
+data1 <- matrix(c(40,75,50,80), nrow=2, byrow=TRUE)
 
-# Fill with mean
-data.fillna(data.mean(), inplace=True)
+# chi-square test
+test1 <- chisq.test(data1, correct=FALSE)
 
-# DataFrame cleaning
-df = pd.DataFrame([[1,np.nan],[3,4]])
-df.fillna(0)
+# critical value method
+df <- test1$parameter
+critical <- qchisq(0.95, df)
 
-# Stacked bar plot
-quarters = ['Q1','Q2','Q3','Q4']
-p1 = [20,30,40,50]
-p2 = [10,20,30,40]
+if(test1$statistic > critical){
+  print("Reject H0 (Dependent)")
+} else {
+  print("Accept H0 (Independent)")
+}
 
-plt.bar(quarters, p1)
-plt.bar(quarters, p2, bottom=p1)
-plt.show()
-# =========================
-#   exp 8 WEB SCRAPING
-# =========================
+# plots
+barplot(data1, beside=TRUE, col=c("yellow","green"),
+        legend=TRUE, main="Bar Plot")
 
-import requests
-from bs4 import BeautifulSoup
+mosaicplot(data1, color=TRUE, main="Mosaic Plot")
 
-url = "http://books.toscrape.com/catalogue/category/books_1/index.html"
-response = requests.get(url)
+assocplot(data1, main="Association Plot")
 
-# Parse HTML
-soup = BeautifulSoup(response.text, "html.parser")
+# -------- DATASET 2 --------
+data2 <- matrix(c(40,70,30,80), nrow=2, byrow=TRUE)
 
-titles, prices, ratings = [], [], []
+test2 <- chisq.test(data2, correct=FALSE)
 
-# Extract data
-books = soup.find_all("article", class_="product_pod")
+df <- test2$parameter
+critical <- qchisq(0.95, df)
 
-for book in books:
-titles.append(book.h3.a["title"])
-prices.append(book.find("p", class_="price_color").text)
-ratings.append(book.p["class"][1])
+if(test2$statistic > critical){
+  print("Reject H0 (Dependent)")
+} else {
+  print("Accept H0 (Independent)")
+}
 
-# Store in DataFrame
-df = pd.DataFrame({
-"Title": titles,
-"Price": prices,
-"Rating": ratings
-})
+# plots
+barplot(data2, beside=TRUE, col=c("yellow","green"),
+        legend=TRUE, main="Bar Plot")
 
-# Save to CSV
-df.to_csv("books_data.csv", index=False)
+mosaicplot(data2, color=TRUE, main="Mosaic Plot")
 
-print("Scraping completed!")
+assocplot(data2, main="Association Plot")
+##################################
+
+EXP 7: SIGN TEST
+
+Aim:
+To test whether the population median differs from a hypothesized value.
+
+Steps:
+1. Define data and hypothesized median (M0)
+2. Compute signs of (data - M0)
+3. Remove zero values (ties)
+4. Count positive signs (S)
+5. Compute p-value using binomial distribution
+6. Compare with alpha (0.05)
+
+R Code:
+data = c(...)
+M0 = ...
+alpha = 0.05
+
+signs = sign(data - M0)
+signs = signs[signs != 0]
+
+S = sum(signs > 0)
+n = length(signs)
+
+p_val = 2 * pbinom(min(S, n-S), n, 0.5)
+
+if(p_val < alpha){
+  print("REJECT H0")
+}else{
+  print("FAIL TO REJECT H0")
+}
+
+Conclusion:
+If p-value < 0.05 → Reject H0
+Else → Fail to reject H0
+
+
+WILCOXON SIGNED RANK TEST
+
+Aim:
+To compare two related samples using ranks.
+
+R Code:
+before = c(...)
+after = c(...)
+
+test = wilcox.test(after, before, paired=TRUE, exact=TRUE)
+print(test)
+
+if(test$p.value < 0.05){
+  print("REJECT H0")
+}else{
+  print("FAIL TO REJECT H0")
+}
+
+Conclusion:
+Checks if median difference between pairs is significant.
+
+
+-----------------------------------------------------
+
+EXP 8: MEDIAN TEST
+
+Aim:
+To compare medians of multiple groups.
+
+Steps:
+1. Combine all data
+2. Compute overall median
+3. Convert values into above/below median
+4. Create contingency table
+5. Apply Fisher’s Exact Test
+
+R Code:
+A = c(...)
+B = c(...)
+C = c(...)
+D = c(...)
+
+data = c(A,B,C,D)
+group = factor(c(rep('A',10), rep('B',10), rep('C',10), rep('D',10)))
+
+median_val = median(data)
+
+tbl = table(group, data > median_val)
+
+fisher.test(tbl)
+
+Conclusion:
+If p-value < 0.05 → Significant difference exists
+
+
+-----------------------------------------------------
+EXP 9: KOLMOGOROV-SMIRNOV TEST
+
+ONE SAMPLE K-S TEST
+
+Aim:
+To compare sample with a theoretical distribution.
+
+R Code:
+x = c(...)
+
+ks.test(x, 'pnorm', mean=..., sd=...)
+
+Conclusion:
+If p-value < 0.05 → Data does not follow distribution
+
+
+TWO SAMPLE K-S TEST
+
+Aim:
+To compare two datasets.
+
+R Code:
+A = c(...)
+B = c(...)
+
+ks.test(A, B)
+
+Conclusion:
+If p-value < 0.05 → Distributions are different
+
+
+-----------------------------------------------------
+
+IMPORTANT VISUALIZATIONS (WRITE ANY 2-3)
+
+Sign Test:
+barplot(data)
+plot(data)
+hist(data)
+
+Wilcoxon:
+boxplot(before, after)
+plot(before); lines(after)
+barplot(after-before)
+
+Median Test:
+boxplot(A,B,C,D)
+plot(data)
+hist(A)
+
+K-S Test:
+plot(ecdf(x))
+hist(x)
+plot difference curves
+
+
+
+
+
